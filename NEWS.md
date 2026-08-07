@@ -1,3 +1,6 @@
+# excluderanges 0.99.13 (2026-08-07)
+- Extract AnnotationHub objects by names
+
 # excluderanges 0.99.8 (2022-11-08)
 - Update README and the vignette to work with BioC 3.16
 
