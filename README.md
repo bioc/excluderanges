@@ -55,8 +55,9 @@ Drive](https://drive.google.com/drive/folders/1sF9m8Y3eZouTZ3IEEywjs2kfHOWFBSJT?
 [Anshul](https://twitter.com/anshulkundaje/status/1263546023151992832?s=20)
 and we recommend [ENCFF356LFX exclusion list
 regions](https://www.encodeproject.org/files/ENCFF356LFX/). Also
-available as `hg38.Kundaje.GRCh38_unified_Excludable` excluderanges
-object (AnnotationHub ID: AH107305)
+available as the `hg38.Kundaje.GRCh38_unified_Excludable` excluderanges
+object, retrievable via
+`query(ah, c("hg38", "hg38.Kundaje.GRCh38_unified_Excludable", "ENCODE"))`
 <!-- and [BEDbase.org](http://bedbase.org/#/bedsplash/1a561729234c2844303a051b16f66656). -->
 
 BED files of exclusion regions are available on the [ENCODE
@@ -90,9 +91,16 @@ if (!requireNamespace("BiocManager", quietly = TRUE)) {
     install.packages("BiocManager")
 }
 BiocManager::install("AnnotationHub", update = FALSE) 
+#> package 'AnnotationHub' successfully unpacked and SHA256 sums checked
+#> 
+#> The downloaded binary packages are in
+#>  /var/folders/lp/svq4srb14mx324qnfdsn6ss80000gq/T//RtmpxbTgVS/downloaded_packages
 # Additional packages
 BiocManager::install("GenomicRanges", update = FALSE)
 BiocManager::install("plyranges", update = FALSE)
+#> 
+#> The downloaded binary packages are in
+#>  /var/folders/lp/svq4srb14mx324qnfdsn6ss80000gq/T//RtmpxbTgVS/downloaded_packages
 ```
 -->
 
@@ -129,7 +137,7 @@ query_data <- subset(ah, preparerclass == "excluderanges")
 # query_data <- query(ah, c("excluderanges", "Kundaje", "hg38"))
 query_data
 #> AnnotationHub with 90 records
-#> # snapshotDate(): 2025-11-14
+#> # snapshotDate(): 2026-04-23
 #> # $dataprovider: UCSC, GitHub, ENCODE, GreyListChIP, UCSChub, excluderanges,...
 #> # $species: Homo sapiens, Mus musculus, Drosophila melanogaster, Danio rerio...
 #> # $rdataclass: GRanges
@@ -155,7 +163,7 @@ query_data
 `hg38.Kundaje.GRCh38_unified_Excludable` object recommended by Anshul
 
 ``` r
-excludeGR.hg38.Kundaje.1 <- query_data[["AH107305"]]
+excludeGR.hg38.Kundaje.1 <- query(ah, c("hg38", "hg38.Kundaje.GRCh38_unified_Excludable", "ENCODE"))[[1]]
 #> loading from cache
 # Always a good idea to sort GRanges and keep standard chromosomes
 excludeGR.hg38.Kundaje.1 <- excludeGR.hg38.Kundaje.1 %>% 
@@ -197,7 +205,7 @@ compare them.
 query_data <- query(ah, c("excluderanges", "hg38"))
 query_data
 #> AnnotationHub with 19 records
-#> # snapshotDate(): 2025-11-14
+#> # snapshotDate(): 2026-04-23
 #> # $dataprovider: UCSC, ENCODE, GitHub, GreyListChIP, UCSChub
 #> # $species: Homo sapiens
 #> # $rdataclass: GRanges
@@ -218,21 +226,21 @@ query_data
 #>   AH107359 | hg38.UCSC.scaffold                    
 #>   AH119510 | hg38.GreyListChIP.STAR_36bp_1000merge 
 #>   AH119511 | hg38.GreyListChIP.STAR_101bp_1000merge
-excludeGR.hg38.Bernstein <- query_data[["AH107306"]]
+excludeGR.hg38.Bernstein <- query(ah, c("hg38", "hg38.Bernstein.Mint_Excludable_GRCh38", "ENCODE"))[[1]]
 #> loading from cache
-excludeGR.hg38.Boyle     <- query_data[["AH107307"]]
+excludeGR.hg38.Boyle     <- query(ah, c("hg38", "hg38.Boyle.hg38-Excludable.v2", "GitHub"))[[1]]
 #> loading from cache
-excludeGR.hg38.Kundaje.2 <- query_data[["AH107308"]]
+excludeGR.hg38.Kundaje.2 <- query(ah, c("hg38", "hg38.Kundaje.GRCh38.Excludable", "ENCODE"))[[1]]
 #> loading from cache
-excludeGR.hg38.Lareau    <- query_data[["AH107309"]]
+excludeGR.hg38.Lareau    <- query(ah, c("hg38", "hg38.Lareau.hg38.full.Excludable", "GitHub"))[[1]]
 #> loading from cache
-excludeGR.hg38.Reddy     <- query_data[["AH107310"]]
+excludeGR.hg38.Reddy     <- query(ah, c("hg38", "hg38.Reddy.wgEncodeDacMapabilityConsensusExcludable.hg38", "ENCODE"))[[1]]
 #> loading from cache
-excludeGR.hg38.Wimberley <- query_data[["AH107311"]]
+excludeGR.hg38.Wimberley <- query(ah, c("hg38", "hg38.Wimberley.peakPass60Perc_sorted", "GitHub"))[[1]]
 #> loading from cache
-excludeGR.hg38.Wold      <- query_data[["AH107312"]]
+excludeGR.hg38.Wold      <- query(ah, c("hg38", "hg38.Wold.hg38mitoExcludable", "ENCODE"))[[1]]
 #> loading from cache
-excludeGR.hg38.Yeo       <- query_data[["AH107313"]]
+excludeGR.hg38.Yeo       <- query(ah, c("hg38", "hg38.Yeo.eCLIP_Excludableregions.hg38liftover.bed.fixed", "ENCODE"))[[1]]
 #> loading from cache
 ```
 
@@ -267,7 +275,7 @@ ggplot(mtx_to_plot, aes(x = Source, y = Count, fill = Source)) +
   theme_bw() + theme(legend.position = "none")
 ```
 
-<img src="man/figures/README-excluderanges_hg38_count-1.png" width="100%" />
+<img src="man/figures/README-excluderanges_hg38_count-1.png" alt="" width="100%" />
 
 ``` r
 # ggsave("man/figures/excluderanges_hg38_count.png", width = 5.5, height = 2)
@@ -308,7 +316,7 @@ ggplot(mtx_to_plot, aes(x = log2(Width), y = Source, fill = Source)) +
   theme_bw() + theme(legend.position = "none")
 ```
 
-<img src="man/figures/README-excluderanges_hg38_width-1.png" width="100%" />
+<img src="man/figures/README-excluderanges_hg38_width-1.png" alt="" width="100%" />
 
 ``` r
 # ggsave("man/figures/excluderanges_hg38_width.png", width = 5.5, height = 2)
@@ -344,7 +352,7 @@ ggplot(mtx_to_plot, aes(x = TotalWidth, y = Source, fill = Source)) +
   xlab("log10 total width")
 ```
 
-<img src="man/figures/README-excluderanges_hg38_sumwidth-1.png" width="100%" />
+<img src="man/figures/README-excluderanges_hg38_sumwidth-1.png" alt="" width="100%" />
 
 ``` r
 # ggsave("man/figures/excluderanges_hg38_sumwidth.png", width = 6.5, height = 2)
@@ -407,7 +415,7 @@ rownames(mtx_to_plot) <- colnames(mtx_to_plot) <- str_trunc(all_excludeGR_name, 
 pheatmap(data.matrix(mtx_to_plot), clustering_method = "ward.D")
 ```
 
-<img src="man/figures/README-excluderanges_hg38_overlap_coefficient-1.png" width="100%" />
+<img src="man/figures/README-excluderanges_hg38_overlap_coefficient-1.png" alt="" width="100%" />
 
 ``` r
 # dev.off()
@@ -445,7 +453,7 @@ ggplot(mtx_to_plot, aes(x = Number, y = Type, fill = Type)) +
   theme_bw() + theme(legend.position = "none")
 ```
 
-<img src="man/figures/README-excluderanges_hg38_Reddy_metadata-1.png" width="100%" />
+<img src="man/figures/README-excluderanges_hg38_Reddy_metadata-1.png" alt="" width="100%" />
 
 ``` r
 # ggsave("man/figures/excluderanges_hg38_Reddy_metadata.png", width = 5, height = 2.5)
@@ -521,11 +529,11 @@ by Caleb Lareau in the
 [mitoblacklist](https://github.com/caleblareau/mitoblacklist) GitHub
 repository. These NUMT sets can be combined with exclusion sets.
 
-Example of the `hg38.Lareau.hg38_peaks` object, AnnotationHub ID
-AH107343
+Example of the `hg38.Lareau.hg38_peaks` object, retrievable via
+`query(ah, c("hg38", "hg38.Lareau.hg38_peaks", "GitHub"))`
 
 ``` r
-hg38.Lareau.hg38_peaks <- query_data[["AH107343"]]
+hg38.Lareau.hg38_peaks <- query(ah, c("hg38", "hg38.Lareau.hg38_peaks", "GitHub"))[[1]]
 #> loading from cache
 hg38.Lareau.hg38_peaks
 #> GRanges object with 784 ranges and 6 metadata columns:
@@ -572,9 +580,8 @@ but lacks the metadata columns needed to decide the type of gaps.
 
 ``` r
 # Search for the gap track
-# ahData <- query(ah, c("gap", "Homo sapiens", "hg19"))
-# ahData[ahData$title == "Gap"]
-gaps <- ahData[["AH6444"]]
+ahData <- query(ah, c("gap", "Homo sapiens", "hg19"))
+gaps <- ahData[ahData$title == "Gap"][[1]]
 ```
 
 The [UCSC ‘gap’
@@ -582,7 +589,7 @@ table](http://genome.ucsc.edu/cgi-bin/hgTables?db=hg19&hgta_group=map&hgta_track
 provides better granularity about the types of gaps available. E.g., for
 human, hg19, we have the following types and the number of gaps.
 
-<img src="man/figures/README-gapcounts-1.png" width="70%" height="70%" />
+<img src="man/figures/README-gapcounts-1.png" alt="" width="70%" height="70%" />
 
 Those objects are provided as individual GRanges.
 
@@ -593,7 +600,7 @@ Naming convention: `<genome assembly>.UCSC.<gap type>`, e.g.,
 query_data <- query(ah, c("excluderanges", "UCSC", "Homo Sapiens", "hg38"))
 query_data
 #> AnnotationHub with 7 records
-#> # snapshotDate(): 2025-11-14
+#> # snapshotDate(): 2026-04-23
 #> # $dataprovider: UCSC, UCSChub
 #> # $species: Homo sapiens
 #> # $rdataclass: GRanges
@@ -611,7 +618,7 @@ query_data
 #>   AH107358 | hg38.UCSC.contig         
 #>   AH107359 | hg38.UCSC.scaffold
 
-gapsGR_hg38_centromere <- query_data[["AH107354"]]
+gapsGR_hg38_centromere <- query(ah, c("hg38", "hg38.UCSC.centromere", "UCSC"))[[1]]
 #> loading from cache
 gapsGR_hg38_centromere
 #> GRanges object with 109 ranges and 2 metadata columns:
@@ -640,7 +647,7 @@ them as they are essentially placeholders.
 
 ``` r
 query_data <- query(ah, c("excluderanges", "Mus musculus", "UCSC"))
-mm39.UCSC.centromere <- query_data[["AH107366"]]
+mm39.UCSC.centromere <- query(ah, c("mm39", "mm39.UCSC.centromere", "UCSC"))[[1]]
 #> loading from cache
 head(mm39.UCSC.centromere)
 #> GRanges object with 6 ranges and 6 metadata columns:
@@ -793,6 +800,23 @@ R. Please run this yourself to check for any updates on how to cite
 
 ``` r
 print(citation("excluderanges"), bibtex = TRUE)
+#> To cite package 'excluderanges' in publications use:
+#> 
+#>   Dozmorov MG, Davis E, Mu W, Lee S, Triche T, Phanstiel D, Love M
+#>   (2026). _excluderanges_.
+#>   https://github.com/dozmorovlab/excluderanges/excluderanges - R
+#>   package version 0.99.13,
+#>   <https://github.com/dozmorovlab/excluderanges>.
+#> 
+#> A BibTeX entry for LaTeX users is
+#> 
+#>   @Manual{,
+#>     title = {excluderanges},
+#>     author = {Mikhail G. Dozmorov and Eric Davis and Wancen Mu and Stuart Lee and Tim Triche and Douglas Phanstiel and Michael Love},
+#>     year = {2026},
+#>     url = {https://github.com/dozmorovlab/excluderanges},
+#>     note = {https://github.com/dozmorovlab/excluderanges/excluderanges - R package version 0.99.13},
+#>   }
 ```
 
 # Code of Conduct
